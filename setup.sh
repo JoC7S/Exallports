@@ -2,7 +2,8 @@
 
 if [ $EUID -ne 0 ]; then
 	echo " "
-	echo "$(tput setaf 3)[$(tput setaf 1)*$(tput setaf 3)]Ejecuta el script como root"
+	echo "$(tput setaf 3)[$(tput setaf 1)*$(tput setaf 3)]Ejecuta el script como root."
+	echo " "
 	exit 1
 fi
 
