@@ -3,33 +3,45 @@
 trap ctrl_c INT
 
 function ctrl_c() {
-	echo ""
+        echo ""
         echo "Saliendo...."
-	exit
+        echo ""
+        exit
 }
 
 
 figlet -r Exallports
-echo "$(tput setaf 6)									 @JoC7S "
+echo "$(tput setaf 6)                                                                    @JoC7S "
 
 if [[ -z $1 ]]
 then
+echo ""
 echo "Debe indicar la captura grapeable de nmap."
+echo ""
+echo "Ej: exallports [captura]"
+echo ""
 read -p "$(tput setaf 3)[$(tput setaf 1)*$(tput setaf 3)]$(tput setaf 3)Tambien puede iniciar un proceso de nmap si deseas (Y/N): " proceso
-	if [[ $proceso == "Y" ]] || [[ $proceso == "y" ]]
-	then
-		read -p "$(tput setaf 3)Indica la ip para analizar: " an
-		read -p "$(tput setaf 3)Indica el nombre del grapeable: " nombre
-			if [[ -f $nombre ]]
-			then
-				echo ""
-				echo "$(tput setaf 3)[$(tput setaf 1)*$(tput setaf 3)]$(tput setaf 3)El archivo grapeable ya existe en el directorio actual"
-				echo ""
-			fi
-		echo "$(tput setaf 1)Esto puede tardar un poco..."
-		nmap --stats-every 1s -sS -p- --min-rate 5000 -n $an -oG $nombre | grep -Eo '[0-9]{1,2}\.[0-9]{1,2}\%'
-		
-		
+        if [[ $proceso == "Y" ]] || [[ $proceso == "y" ]]
+        then
+                read -p "$(tput setaf 3)Indica la ip para analizar: " an
+                read -p "$(tput setaf 3)Indica el nombre del grapeable: " nombre
+                        if [[ -f $nombre ]]
+                        then
+                                echo ""
+                                echo "$(tput setaf 3)[$(tput setaf 1)*$(tput setaf 3)]$(tput setaf 3)El archivo grapeable ya existe en el directorio actual"
+                                echo ""
+                                read -p "¿Quiere continuar igualmente? (Y/N): " respuesta
+
+                                        if [[ $respuesta == "Y" ]] || [[ $respuesta == "y" ]]
+                                        then
+                                                echo "$(tput setaf 1)Esto puede tardar un poco..."
+                                                nmap --stats-every 1s -sS -p- --min-rate 5000 -n $an -oG $nombre | grep -Eo '[0-9]{1,2}\.[0-9]{1,2}\%'
+                                        fi
+                        else
+                echo "$(tput setaf 1)Esto puede tardar un poco..."
+                nmap --stats-every 1s -sS -p- --min-rate 5000 -n $an -oG $nombre | grep -Eo '[0-9]{1,2}\.[0-9]{1,2}\%'
+                fi
+
 echo -n "$(tput setaf 3)Ip targeteada:$(tput setaf 1) " && cat $nombre | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u
 echo ""
 echo -n "$(tput setaf 3)[$(tput setaf 1)-$(tput setaf 3)]$(tput setaf 3)Puertos filtrados:$(tput setaf 4) " && cat $nombre | grep -oP '\d{1,5}/filtered' | cut -d "/" -f 1 | xargs | tr ' ' ','
@@ -39,7 +51,7 @@ echo ""
 exit
 else
 exit
-	fi
+        fi
 
 fi
 
