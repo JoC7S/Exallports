@@ -6,7 +6,7 @@ if [ $EUID -ne 0 ]; then
 	exit 1
 fi
 
-chmod -x exallports
+chmod +x exallports
 cp exallports /usr/bin/
 
 echo "$(tput setaf 3)[$(tput setaf 1)*$(tput setaf 3)]$(tput setaf 6)Completado"
